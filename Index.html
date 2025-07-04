@@ -117,7 +117,7 @@
       z-index: 0;
       opacity: 0.08;
       pointer-events: none;
-      width: 70vw;
+      width: 700vw;
       max-width: 700px;
       min-width: 320px;
       height: auto;
@@ -126,18 +126,19 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       min-height: 100vh;
       width: 100vw;
       z-index: 1;
       position: relative;
+      margin-top: 1.2rem;
     }
     .krishna-quote {
       font-family: 'Noto Serif Devanagari', serif;
       font-size: 1.08rem;
       color: var(--deep-brown);
-      margin-bottom: 0.7em;
-      margin-top: 0.7em;
+      margin-bottom: 0.3em;
+      margin-top: 0.3em;
       text-align: center;
       font-style: italic;
       opacity: 0.92;
@@ -147,8 +148,9 @@
       border-radius: 24px;
       box-shadow: var(--shadow);
       padding: 1.6rem 1rem 1.1rem 1rem;
-      max-width: 370px;
-      width: 100%;
+      width: 75vw;
+      max-width: 1200px;
+      min-width: 270px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
@@ -317,7 +319,9 @@
       filter: brightness(1.2) contrast(1.5);
     }
     .ask-btn {
-      width: 100%;
+      width: 75vw;
+      max-width: 1200px;
+      min-width: 270px;
       padding: 0.7rem 0;
       border: 2px solid var(--saffron);
       border-radius: 14px;
@@ -381,7 +385,9 @@
       font-size: 0.97rem;
       text-align: center;
       margin-top: 1.2rem;
-      max-width: 370px;
+      width: 75vw;
+      max-width: 1200px;
+      min-width: 270px;
       font-weight: 500;
       letter-spacing: 0.1px;
       text-shadow: 0 1px 6px #fff3;
@@ -471,9 +477,158 @@
       user-select: none;
       font-family: 'Noto Serif Devanagari', serif;
     }
-    @media (max-width: 600px) {
-      .card {
-        padding: 0.7rem 0.3rem 0.7rem 0.3rem;
+    .gita-response {
+      margin-top: 0.7em;
+      background: var(--bg-card);
+      border-radius: 10px;
+      border: 1.2px solid var(--saffron);
+      box-shadow: 0 1px 6px #e6b80011;
+      padding: 0.7em 1em;
+      color: var(--deep-brown);
+      font-size: 0.97rem;
+      width: 75vw;
+      max-width: 1200px;
+      min-width: 270px;
+      word-break: break-word;
+      white-space: pre-line;
+      min-height: 1.5em;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .gita-response .user-question {
+      background: #fff6e0;
+      border-left: 3px solid var(--saffron);
+      padding: 0.5em 0.7em;
+      margin-bottom: 0.7em;
+      font-style: italic;
+      color: var(--saffron-dark);
+      font-weight: 500;
+      border-radius: 6px;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .gita-response .krishna-wisdom {
+      background: #fcf7e6;
+      border-radius: 7px;
+      padding: 0.7em 0.9em 0.7em 0.9em;
+      margin-bottom: 0.7em;
+      border: 1px solid #fbe6b0;
+      color: var(--deep-brown);
+      text-align: center;
+    }
+    .gita-response .shloka-card {
+      background: #fffbe7;
+      border: 1.5px solid #ffe082;
+      border-radius: 8px;
+      padding: 0.7em 1em;
+      margin-top: 0.5em;
+      color: var(--deep-brown);
+      font-size: 0.95em;
+    }
+    .gita-response .shloka-card .shloka-title {
+      font-weight: bold;
+      margin-bottom: 0.3em;
+      color: #a86a00;
+    }
+    .gita-response .shloka-card .shloka-sanskrit {
+      font-family: 'Noto Serif Devanagari', serif;
+      margin-bottom: 0.3em;
+      color: #8b3a1c;
+      font-size: 1.05em;
+    }
+    .gita-response .shloka-card .shloka-label {
+      font-weight: 600;
+      margin-top: 0.3em;
+      color: #b26a00;
+    }
+    .gita-response .shloka-card .shloka-transliteration {
+      font-style: italic;
+      margin-bottom: 0.3em;
+      color: #6d4c00;
+    }
+    .gita-response .shloka-card .shloka-translation {
+      color: #8b3a1c;
+      margin-top: 0.2em;
+    }
+    .gita-response.loading {
+      color: var(--saffron-dark);
+      font-style: italic;
+    }
+    .gita-response.error {
+      color: #b00020;
+      font-weight: 600;
+    }
+    .gita-response .shloka-section {
+      background: #fffbe7;
+      border: 1.5px solid #ffe082;
+      border-radius: 8px;
+      padding: 1em 1em 0.7em 1em;
+      margin: 0.7em 0 0.7em 0;
+      color: var(--deep-brown);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .gita-response .shloka-section .shloka-sanskrit {
+      font-family: 'Noto Serif Devanagari', serif;
+      font-size: 1.25em;
+      font-weight: bold;
+      color: #8b3a1c;
+      margin-bottom: 0.4em;
+      text-align: center;
+    }
+    .gita-response .shloka-section .shloka-transliteration {
+      font-size: 1.08em;
+      font-style: italic;
+      color: #6d4c00;
+      margin-bottom: 0.2em;
+      text-align: center;
+    }
+    .gita-response .translation-section {
+      background: #fffbe7;
+      border: 1.5px solid #ffe082;
+      border-radius: 8px;
+      padding: 0.7em 1em;
+      margin: 0.7em 0 0.7em 0;
+      color: var(--deep-brown);
+      text-align: center;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .gita-response .translation-section .translation-label {
+      font-weight: bold;
+      color: #b26a00;
+      margin-bottom: 0.3em;
+      display: block;
+      font-size: 1.08em;
+    }
+    .gita-response .context-section {
+      background: #fcf7e6;
+      border-radius: 7px;
+      padding: 0.7em 0.9em 0.7em 0.9em;
+      margin-top: 0.7em;
+      border: 1px solid #fbe6b0;
+      color: var(--deep-brown);
+      text-align: center;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    @media (max-width: 900px) {
+      .card, .gita-response, .quote, .ask-btn, .ask-btn#askAgainBtn {
+        width: 98vw;
+        min-width: 0;
         max-width: 99vw;
       }
       .quote {
@@ -485,8 +640,8 @@
         font-size: 1.2rem;
       }
       .mandala-bg {
-        width: 95vw;
-        min-width: 180px;
+         width: 95vw;
+         min-width: 120px;
       }
       .krishna-listening {
         font-size: 0.85rem;
@@ -528,10 +683,12 @@
         <button class="example-btn" data-example="How do I deal with loss?"><span>💧</span>How do I deal with loss?</button>
       </div>
       <textarea id="userQuestion" placeholder="e.g., Why do I suffer? Should I follow my passion? How do I deal with failure?"></textarea>
-      <button class="ask-btn">
+      <button class="ask-btn" id="askBtn">
         <img src="Feather.png" alt="Peacock Feather" class="feather-icon" />
         Ask Krishna
       </button>
+      <div id="gita-response" class="gita-response" style="display:none;"></div>
+      <button id="askAgainBtn" class="ask-btn" style="display:none;margin-top:1em;">Ask Again</button>
     </div>
     <div class="quote">
       <div class="shloka-label">
@@ -580,6 +737,131 @@
       const theme = localStorage.getItem('askgita-theme');
       if (theme) setTheme(theme);
     })();
+    // Ask Krishna button handler
+    const askBtn = document.getElementById('askBtn');
+    const askAgainBtn = document.getElementById('askAgainBtn');
+    const userQuestion = document.getElementById('userQuestion');
+    const gitaResponse = document.getElementById('gita-response');
+
+    function resetAskForm() {
+      userQuestion.value = '';
+      userQuestion.disabled = false;
+      askBtn.style.display = '';
+      gitaResponse.style.display = 'none';
+      askAgainBtn.style.display = 'none';
+      userQuestion.focus();
+    }
+
+    askAgainBtn.addEventListener('click', resetAskForm);
+
+    askBtn.addEventListener('click', async function() {
+      const question = userQuestion.value.trim();
+      if (!question) {
+        gitaResponse.textContent = 'Please enter a question.';
+        gitaResponse.className = 'gita-response error';
+        gitaResponse.style.display = '';
+        return;
+      }
+      gitaResponse.textContent = 'Krishna is contemplating your question...';
+      gitaResponse.className = 'gita-response loading';
+      gitaResponse.style.display = '';
+      askBtn.style.display = 'none';
+      userQuestion.disabled = true;
+      askAgainBtn.style.display = 'none';
+      try {
+        const res = await fetch('http://127.0.0.1:5000/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question })
+        });
+        const data = await res.json();
+        if (res.ok && data.answer) {
+          gitaResponse.innerHTML = formatGitaAnswer(question, data.answer);
+          gitaResponse.className = 'gita-response';
+          gitaResponse.style.display = '';
+          askAgainBtn.style.display = '';
+        } else {
+          gitaResponse.textContent = data.error || 'An error occurred.';
+          gitaResponse.className = 'gita-response error';
+          gitaResponse.style.display = '';
+          askAgainBtn.style.display = '';
+        }
+      } catch (err) {
+        gitaResponse.textContent = 'Could not connect to Krishna. Please try again later.';
+        gitaResponse.className = 'gita-response error';
+        gitaResponse.style.display = '';
+        askAgainBtn.style.display = '';
+      }
+    });
+
+    function formatGitaAnswer(question, answer) {
+      // Helper to bold *text* and remove asterisks
+      function boldAsterisks(str) {
+        return str.replace(/\*([^*]+)\*/g, '<b>$1</b>');
+      }
+      // Helper to clean unwanted phrases
+      function cleanLabel(str) {
+        return str
+          .replace(/The original Sanskrit shloka is:?/gi, '')
+          .replace(/Its IAST transliteration is:?/gi, '')
+          .replace(/The authentic English translation is:?/gi, '')
+          .replace(/^\s*is:?\s*$/gi, '')
+          .trim();
+      }
+      // Extract sections
+      let intro = '', shloka = '', translit = '', translation = '', context = '', ref = '';
+      // Extract shloka reference (e.g., 2.47)
+      const refMatch = answer.match(/(?:chapter|verse)[^\d]*(\d+)[^\d]+(\d+)/i);
+      if (refMatch) ref = `Chapter ${refMatch[1]}, Verse ${refMatch[2]}`;
+      // Extract Sanskrit shloka (between 'Sanskrit:' and 'Transliteration:' or similar)
+      const sanskritMatch = answer.match(/Sanskrit:?\s*([\s\S]*?)(?:Transliteration:|IAST transliteration:|Romanized Sanskrit:)/i);
+      if (sanskritMatch) shloka = cleanLabel(sanskritMatch[1].trim());
+      // Extract transliteration
+      const translitMatch = answer.match(/Transliteration:?\s*([\s\S]*?)(?:Translation:|Explanation:)/i);
+      if (translitMatch) translit = cleanLabel(translitMatch[1].trim());
+      // Extract translation
+      const translationMatch = answer.match(/Translation:?\s*([\s\S]*?)(?:Explanation:|$)/i);
+      if (translationMatch) translation = cleanLabel(translationMatch[1].trim());
+      // Extract intro (before Sanskrit:)
+      const introMatch = answer.match(/([\s\S]*?)(?:Sanskrit:|Chapter|Verse|Transliteration:|Translation:)/i);
+      if (introMatch) intro = cleanLabel(introMatch[1].trim());
+      // Extract context (after Translation: or Explanation:)
+      const contextMatch = answer.match(/(?:Explanation:|Translation:[^\n]*\n)([\s\S]*)/i);
+      if (contextMatch) context = cleanLabel(contextMatch[1].trim());
+      // Remove context from translation if duplicated
+      if (context && translation && translation.endsWith(context)) {
+        translation = translation.slice(0, -context.length).trim();
+      }
+      // Remove translation from context if duplicated
+      if (context && translation && context.startsWith(translation)) {
+        context = context.slice(translation.length).trim();
+      }
+      // Remove shloka/translit/translation from context if duplicated
+      if (context && shloka && context.startsWith(shloka)) {
+        context = context.slice(shloka.length).trim();
+      }
+      if (context && translit && context.startsWith(translit)) {
+        context = context.slice(translit.length).trim();
+      }
+      // Build HTML
+      let html = '';
+      html += `<div class="user-question"><b>Your Question:</b><br><span>"${question.replace(/</g,'&lt;').replace(/>/g,'&gt;')}"</span></div>`;
+      if (intro) html += `<div class="krishna-wisdom"><b>✨ Krishna's Wisdom</b><br>${boldAsterisks(intro).replace(/\n/g,'<br>')}</div>`;
+      if (shloka || translit) {
+        html += `<div class="shloka-section">`;
+        html += `<div class="shloka-title">Shloka${ref ? ' <span style=\"font-weight:normal;font-size:0.9em;\">(' + ref + ')</span>' : ''}</div>`;
+        if (shloka) html += `<div class="shloka-sanskrit">${boldAsterisks(shloka).replace(/\n/g,'<br>')}</div>`;
+        if (translit) html += `<div class="shloka-transliteration">${boldAsterisks(translit).replace(/\n/g,'<br>')}</div>`;
+        html += `</div>`;
+      }
+      if (translation) {
+        html += `<div class="translation-section"><span class="translation-label">Translation</span><div>${boldAsterisks(translation).replace(/\n/g,'<br>')}</div></div>`;
+      }
+      if (context) {
+        html += `<div class="context-section">${boldAsterisks(context).replace(/\n/g,'<br>')}</div>`;
+      }
+      return html;
+    }
   </script>
 </body>
 </html>
