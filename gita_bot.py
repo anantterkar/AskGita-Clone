@@ -63,5 +63,3 @@ if __name__ == "__main__":
             print(f"\n\nKrishna:\n\n{main_response.strip()}\n\n")
         except Exception as e:
             print(f"\n[Error] {e}\n")
-
-
