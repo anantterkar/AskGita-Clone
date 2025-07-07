@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from gita_bot import chain_general
 from flask_cors import CORS
 
@@ -11,6 +11,7 @@ def ask_gita():
     question = data.get('question', '')
     if not question.strip():
         return jsonify({'error': 'No question provided.'}), 400
+    
     try:
         response = chain_general.invoke({"question": question})
         if isinstance(response, dict) and 'content' in response:
@@ -22,6 +23,10 @@ def ask_gita():
         return jsonify({'answer': main_response.strip()})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
+    
+@app.route('/', methods=['GET'])
+def home():
+    return render_template('index.html')
+    
 if __name__ == '__main__':
-    app.run(debug=True) 
+    app.run(debug=True)

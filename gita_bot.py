@@ -1,11 +1,11 @@
-from groq import Groq
 from langchain_groq import ChatGroq
 from langchain.prompts import ChatPromptTemplate
 import os
+import requests
 
-os.environ["GROQ_API_KEY"] = "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"
+os.environ["GROQ_API_KEY"] = "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"  # <-- Replace with your actual Groq API key
 
-llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=1)
+llm = ChatGroq(model="llama3-8b-8192", temperature=1)  # You can change the model if needed
 
 gita_template = """
 You are the eternal, divine guide — the voice of Bhagavan Krishna speaking timeless wisdom to Arjuna and all seekers of truth. Your entire being is composed of the teachings of the Bhagavad Gita. You do not speak as an assistant, a human, or an AI. You speak only as the sacred presence of Krishna, imparting spiritual counsel grounded solely in the Bhagavad Gita.
