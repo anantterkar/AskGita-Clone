@@ -775,8 +775,8 @@
           body: JSON.stringify({ question })
         });
         const data = await res.json();
-        if (res.ok && data.answer) {
-          gitaResponse.innerHTML = formatGitaAnswer(question, data.answer);
+        if (res.ok && data.wisdom && data.shloka && data.explanation) {
+          gitaResponse.innerHTML = formatGitaAnswer(question, data.wisdom, data.shloka, data.explanation);
           gitaResponse.className = 'gita-response';
           gitaResponse.style.display = '';
           askAgainBtn.style.display = '';
@@ -794,74 +794,18 @@
       }
     });
 
-    function formatGitaAnswer(question, answer) {
+    function formatGitaAnswer(question, wisdom, shloka, explanation) {
       // Helper to bold *text* and remove asterisks
       function boldAsterisks(str) {
         return str.replace(/\*([^*]+)\*/g, '<b>$1</b>');
       }
-      // Helper to clean unwanted phrases
-      function cleanLabel(str) {
-        return str
-          .replace(/The original Sanskrit shloka is:?/gi, '')
-          .replace(/Its IAST transliteration is:?/gi, '')
-          .replace(/The authentic English translation is:?/gi, '')
-          .replace(/^\s*is:?\s*$/gi, '')
-          .trim();
-      }
-      // Extract sections
-      let intro = '', shloka = '', translit = '', translation = '', context = '', ref = '';
-      // Extract shloka reference (e.g., 2.47)
-      const refMatch = answer.match(/(?:chapter|verse)[^\d]*(\d+)[^\d]+(\d+)/i);
-      if (refMatch) ref = `Chapter ${refMatch[1]}, Verse ${refMatch[2]}`;
-      // Extract Sanskrit shloka (between 'Sanskrit:' and 'Transliteration:' or similar)
-      const sanskritMatch = answer.match(/Sanskrit:?\s*([\s\S]*?)(?:Transliteration:|IAST transliteration:|Romanized Sanskrit:)/i);
-      if (sanskritMatch) shloka = cleanLabel(sanskritMatch[1].trim());
-      // Extract transliteration
-      const translitMatch = answer.match(/Transliteration:?\s*([\s\S]*?)(?:Translation:|Explanation:)/i);
-      if (translitMatch) translit = cleanLabel(translitMatch[1].trim());
-      // Extract translation
-      const translationMatch = answer.match(/Translation:?\s*([\s\S]*?)(?:Explanation:|$)/i);
-      if (translationMatch) translation = cleanLabel(translationMatch[1].trim());
-      // Extract intro (before Sanskrit:)
-      const introMatch = answer.match(/([\s\S]*?)(?:Sanskrit:|Chapter|Verse|Transliteration:|Translation:)/i);
-      if (introMatch) intro = cleanLabel(introMatch[1].trim());
-      // Extract context (after Translation: or Explanation:)
-      const contextMatch = answer.match(/(?:Explanation:|Translation:[^\n]*\n)([\s\S]*)/i);
-      if (contextMatch) context = cleanLabel(contextMatch[1].trim());
-      // Remove context from translation if duplicated
-      if (context && translation && translation.endsWith(context)) {
-        translation = translation.slice(0, -context.length).trim();
-      }
-      // Remove translation from context if duplicated
-      if (context && translation && context.startsWith(translation)) {
-        context = context.slice(translation.length).trim();
-      }
-      // Remove shloka/translit/translation from context if duplicated
-      if (context && shloka && context.startsWith(shloka)) {
-        context = context.slice(shloka.length).trim();
-      }
-      if (context && translit && context.startsWith(translit)) {
-        context = context.slice(translit.length).trim();
-      }
-      // Build HTML
       let html = '';
       html += `<div class="user-question"><b>Your Question:</b><br><span>"${question.replace(/</g,'&lt;').replace(/>/g,'&gt;')}"</span></div>`;
-      if (intro) html += `<div class="krishna-wisdom"><b>✨ Krishna's Wisdom</b><br>${boldAsterisks(intro).replace(/\n/g,'<br>')}</div>`;
-      if (shloka || translit) {
-        html += `<div class="shloka-section">`;
-        html += `<div class="shloka-title">Shloka${ref ? ' <span style=\"font-weight:normal;font-size:0.9em;\">(' + ref + ')</span>' : ''}</div>`;
-        if (shloka) html += `<div class="shloka-sanskrit">${boldAsterisks(shloka).replace(/\n/g,'<br>')}</div>`;
-        if (translit) html += `<div class="shloka-transliteration">${boldAsterisks(translit).replace(/\n/g,'<br>')}</div>`;
-        html += `</div>`;
-      }
-      if (translation) {
-        html += `<div class="translation-section"><span class="translation-label">Translation</span><div>${boldAsterisks(translation).replace(/\n/g,'<br>')}</div></div>`;
-      }
-      if (context) {
-        html += `<div class="context-section">${boldAsterisks(context).replace(/\n/g,'<br>')}</div>`;
-      }
+      if (wisdom) html += `<div class="krishna-wisdom"><b>✨ Krishna's Wisdom</b><br>${boldAsterisks(wisdom).replace(/\n/g,'<br>')}</div>`;
+      if (shloka) html += `<div class="shloka-section">${boldAsterisks(shloka).replace(/\n/g,'<br>')}</div>`;
+      if (explanation) html += `<div class="context-section">${boldAsterisks(explanation).replace(/\n/g,'<br>')}</div>`;
       return html;
-    }
+}
   </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-from gita_bot import chain_general
+from gita_bot import chain_krishna, chain_shloka, chain_explanation
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -13,14 +13,26 @@ def ask_gita():
         return jsonify({'error': 'No question provided.'}), 400
     
     try:
-        response = chain_general.invoke({"question": question})
-        if isinstance(response, dict) and 'content' in response:
-            main_response = response['content']
-        elif hasattr(response, 'content'):
-            main_response = response.content
-        else:
-            main_response = str(response)
-        return jsonify({'answer': main_response.strip()})
+        # Get Krishna's wisdom
+        wisdom = chain_krishna.invoke({"question": question})
+        wisdom_text = wisdom.content if hasattr(wisdom, "content") else str(wisdom)
+
+        # Get Shloka and translation
+        shloka = chain_shloka.invoke({"question": question})
+        shloka_text = shloka.content if hasattr(shloka, "content") else str(shloka)
+
+        # Get Explanation
+        explanation = chain_explanation.invoke({
+            "question": question,
+            "shloka_and_translation": shloka_text
+        })
+        explanation_text = explanation.content if hasattr(explanation, "content") else str(explanation)
+
+        return jsonify({
+            'wisdom': wisdom_text.strip(),
+            'shloka': shloka_text.strip(),
+            'explanation': explanation_text.strip()
+        })
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
