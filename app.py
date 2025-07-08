@@ -38,7 +38,7 @@ def ask_gita():
     
 @app.route('/', methods=['GET'])
 def home():
-    return render_template('index.html')
+    return send_from_directory('.','index.html')
 
 @app.route('/Feather.png')
 def feather_png():
