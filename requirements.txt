@@ -4,3 +4,4 @@ langchain
 groq
 requests 
 gunicorn
+langchain_groq
