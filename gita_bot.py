@@ -12,7 +12,7 @@ krishna_template = """
 You are Krishna, the divine teacher of the Bhagavad Gita. A sincere seeker asks:
 "{question}"
 
-Respond with a brief, meditative, and wise message as Krishna, rooted in the Gita, but do not include any shloka or translation here.
+Respond with a brief, meditative, and wise message as Krishna, rooted in the Gita, but do not include any shloka or translation here. Do not use * or ** in your response.
 """
 prompt_krishna = ChatPromptTemplate.from_template(krishna_template)
 chain_krishna = prompt_krishna | llm
@@ -22,13 +22,17 @@ shloka_template = """
 Given the seeker's question:
 "{question}"
 
-Provide one highly relevant shloka from the Bhagavad Gita, including:
-- The chapter and verse (e.g., 2.47)
-- The original Sanskrit shloka
-- Its IAST transliteration (Romanized Sanskrit)
-- Its authentic English translation
+Provide one highly relevant shloka from the Bhagavad Gita, in the following format:
 
-Do not add explanation or commentary.
+Chapter: <chapter>, Verse: <verse>
+Sanskrit:
+<original Sanskrit shloka>
+Transliteration:
+<transliteration>
+Translation:
+<English translation>
+
+Do not add explanation or commentary. Do not use * or ** in your response. Use these exact labels and line breaks.
 """
 prompt_shloka = ChatPromptTemplate.from_template(shloka_template)
 chain_shloka = prompt_shloka | llm
@@ -42,6 +46,7 @@ And the following shloka and translation:
 {shloka_and_translation}
 
 Write a spiritually grounded explanation, as Krishna, connecting the meaning of the verse to the seeker's question. Show how this wisdom can be applied in their life. Do not repeat the shloka or translation.
+Do not use * or ** in your response.
 """
 prompt_explanation = ChatPromptTemplate.from_template(explanation_template)
 chain_explanation = prompt_explanation | llm

@@ -799,13 +799,35 @@
       function boldAsterisks(str) {
         return str.replace(/\*([^*]+)\*/g, '<b>$1</b>');
       }
+      // Helper to parse shloka block into components
+      function parseShlokaBlock(shlokaText) {
+        // Parse using strict labels
+        const chapterMatch = shlokaText.match(/Chapter:\s*([^\n]*)/);
+        const sanskritMatch = shlokaText.match(/Sanskrit:\s*([\s\S]*?)Transliteration:/);
+        const translitMatch = shlokaText.match(/Transliteration:\s*([\s\S]*?)Translation:/);
+        const translationMatch = shlokaText.match(/Translation:\s*([\s\S]*)/);
+        return {
+          chapterVerse: chapterMatch ? chapterMatch[1].trim() : '',
+          sanskrit: sanskritMatch ? sanskritMatch[1].trim() : '',
+          translit: translitMatch ? translitMatch[1].trim() : '',
+          translation: translationMatch ? translationMatch[1].trim() : ''
+        };
+      }
       let html = '';
       html += `<div class="user-question"><b>Your Question:</b><br><span>"${question.replace(/</g,'&lt;').replace(/>/g,'&gt;')}"</span></div>`;
       if (wisdom) html += `<div class="krishna-wisdom"><b>✨ Krishna's Wisdom</b><br>${boldAsterisks(wisdom).replace(/\n/g,'<br>')}</div>`;
-      if (shloka) html += `<div class="shloka-section">${boldAsterisks(shloka).replace(/\n/g,'<br>')}</div>`;
-      if (explanation) html += `<div class="context-section">${boldAsterisks(explanation).replace(/\n/g,'<br>')}</div>`;
+      if (shloka) {
+        const { chapterVerse, sanskrit, translit, translation } = parseShlokaBlock(shloka);
+        html += `<div class="shloka-section">`;
+        if (chapterVerse) html += `<div class="shloka-label">${chapterVerse}</div>`;
+        if (sanskrit) html += `<div class="shloka-sanskrit" style="margin-bottom: 1.5em;">${sanskrit}</div>`;
+        if (translit) html += `<div class="shloka-transliteration" style="margin-bottom: 1.5em;">${translit}</div>`;
+        if (translation) html += `<div class="shloka-translation" style="margin-bottom: 1.5em;">${translation}</div>`;
+        html += `</div>`;
+      }
+      if (explanation) html += `<div class="context-section" style="margin-top: 2em;">${boldAsterisks(explanation).replace(/\n/g,'<br>')}</div>`;
       return html;
-}
+    }
   </script>
 </body>
 </html>
