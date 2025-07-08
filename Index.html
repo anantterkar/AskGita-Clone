@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AskGita</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Kumar+One&family=Noto+Serif+Devanagari:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --saffron: #e6b800;
+      --deep-brown: #8b3a1c;
+      --saffron-dark: #b26a00;
+      --peacock-blue: #1a4d4d;
+      --bg-light: #fff8e1;
+      --bg-card: rgba(255,255,255,0.85);
+      --bg-dark: #181818;
+      --card-dark: #232323cc;
+      --text-dark: #f7e7c1;
+      --text-light: #8b3a1c;
+      --accent: #fbb117;
+      --shadow: 0 4px 32px #e6b80022, 0 1.5px 8px 0 #8b3a1c11;
+    }
+    [data-theme="dark"] {
+      --bg-light: #181818;
+      --bg-card: #232323cc;
+      --text-light: #f7e7c1;
+      --deep-brown: #f7e7c1;
+      --saffron: #ffd54f;
+      --saffron-dark: #ffb300;
+      --accent: #ffd54f;
+      --shadow: 0 4px 32px #ffd54f22, 0 1.5px 8px 0 #f7e7c111;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Inter', Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(120deg, var(--bg-light) 0%, #ffe0b2 100%);
+      background-size: 200% 200%;
+      animation: bgMove 12s ease-in-out infinite;
+      position: relative;
+      overflow-x: hidden;
+      transition: background 0.5s;
+    }
+    @keyframes bgMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .dark-toggle {
+      position: fixed;
+      top: 1.2em;
+      right: 1.5em;
+      z-index: 10;
+      background: var(--bg-card);
+      border: 1.5px solid var(--saffron);
+      border-radius: 50%;
+      width: 2.3em;
+      height: 2.3em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #0002;
+      transition: background 0.3s, border 0.3s;
+    }
+    .dark-toggle:focus {
+      outline: 2px solid var(--saffron-dark);
+    }
+    .dark-toggle svg {
+      width: 1.3em;
+      height: 1.3em;
+      fill: var(--saffron-dark);
+      transition: fill 0.3s;
+    }
+    .krishna-listening {
+      position: absolute;
+      top: 2.2em;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      font-size: 1.08rem;
+      color: var(--saffron-dark);
+      font-style: italic;
+      z-index: 2;
+      animation: fadeIn 1.2s;
+    }
+    .krishna-listening .feather-glow {
+      height: 1.5em;
+      width: auto;
+      filter: drop-shadow(0 0 10px var(--saffron));
+      animation: featherGlow 2.5s infinite alternate;
+    }
+    @keyframes featherGlow {
+      0% { filter: drop-shadow(0 0 2px var(--saffron)); }
+      100% { filter: drop-shadow(0 0 18px var(--saffron)); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px) translateX(-50%); }
+      to { opacity: 1; transform: translateY(0) translateX(-50%); }
+    }
+    .mandala-bg {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      opacity: 0.08;
+      pointer-events: none;
+      width: 700vw;
+      max-width: 700px;
+      min-width: 320px;
+      height: auto;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      width: 100vw;
+      z-index: 1;
+      position: relative;
+      margin-top: 1.2rem;
+    }
+    .krishna-quote {
+      font-family: 'Noto Serif Devanagari', serif;
+      font-size: 1.08rem;
+      color: var(--deep-brown);
+      margin-bottom: 0.3em;
+      margin-top: 0.3em;
+      text-align: center;
+      font-style: italic;
+      opacity: 0.92;
+    }
+    .card {
+      background: var(--bg-card);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 1.6rem 1rem 1.1rem 1rem;
+      width: 75vw;
+      max-width: 1200px;
+      min-width: 270px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 2.5px solid var(--saffron);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      transition: box-shadow 0.3s, background 0.5s, border 0.3s;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(.4,0,.2,1), transform 0.8s cubic-bezier(.4,0,.2,1);
+    }
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 0.4em;
+      margin-bottom: 0.1em;
+    }
+    .om-icon {
+      font-size: 2.1rem;
+      color: var(--saffron-dark);
+      filter: drop-shadow(0 0 6px var(--saffron)44);
+      margin-right: 0.1em;
+    }
+    .lotus {
+      color: #e5733b;
+      font-size: 2.1rem;
+      margin-bottom: 0.1rem;
+      animation: pulse 1.8s infinite;
+      filter: drop-shadow(0 0 6px #fbb17a44);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 6px #fbb17a44); }
+      50% { transform: scale(1.13); filter: drop-shadow(0 0 16px #fbb17a99); }
+    }
+    .kumar-one-regular {
+      font-family: "Kumar One", serif;
+      font-weight: 400;
+      font-style: normal;
+      letter-spacing: 1.5px;
+      font-size: 1.7rem;
+      color: var(--deep-brown);
+      text-shadow: 0 2px 8px var(--saffron)22;
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      color: var(--deep-brown);
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem 0;
+      letter-spacing: 0.5px;
+    }
+    .subtitle {
+      color: var(--saffron-dark);
+      font-size: 1rem;
+      margin-bottom: 1.1rem;
+      text-align: center;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+      text-shadow: 0 1px 6px #fff3;
+      font-style: italic;
+    }
+    .trust-blurb {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5em;
+      background: #fffbe7;
+      color: var(--deep-brown);
+      border-left: 3.5px solid var(--saffron);
+      border-radius: 7px;
+      font-size: 0.91rem;
+      margin-bottom: 0.7em;
+      padding: 0.4em 0.7em 0.4em 0.6em;
+      box-shadow: 0 1px 6px #e6b80011;
+      opacity: 0.93;
+    }
+    [data-theme="dark"] .trust-blurb {
+      background: #232323;
+      color: var(--text-dark);
+    }
+    .trust-blurb .info {
+      font-size: 1.2em;
+      margin-right: 0.2em;
+      margin-top: 0.1em;
+    }
+    .prompt {
+      color: var(--deep-brown);
+      font-size: 0.98rem;
+      font-weight: 600;
+      margin-bottom: 0.7rem;
+      align-self: flex-start;
+      letter-spacing: 0.1px;
+    }
+    .examples-row {
+      display: flex;
+      gap: 0.3em;
+      margin-bottom: 0.7em;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      width: 100%;
+    }
+    .example-btn {
+      background: linear-gradient(90deg, #fffbe7 0%, var(--saffron)11 100%);
+      color: var(--deep-brown);
+      border: 1.2px solid var(--saffron);
+      border-radius: 8px;
+      padding: 0.28em 0.7em;
+      font-size: 0.91rem;
+      cursor: pointer;
+      transition: background 0.2s, border 0.2s, color 0.2s;
+      box-shadow: 0 1px 4px #e6b80011;
+      display: flex;
+      align-items: center;
+      gap: 0.3em;
+    }
+    .example-btn:hover, .example-btn:focus {
+      background: var(--saffron);
+      color: #fff;
+      border-color: var(--saffron-dark);
+      outline: none;
+    }
+    textarea {
+      width: 100%;
+      min-height: 60px;
+      border-radius: 14px;
+      border: 1.7px solid var(--saffron);
+      padding: 1.1rem;
+      font-size: 0.97rem;
+      font-family: inherit;
+      resize: none;
+      margin-bottom: 1.7rem;
+      background: rgba(250, 246, 240, 0.92);
+      color: var(--deep-brown);
+      box-sizing: border-box;
+      box-shadow: 0 1.5px 8px var(--saffron)11;
+      transition: border 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s;
+    }
+    [data-theme="dark"] textarea {
+      background: #232323;
+      color: var(--text-dark);
+    }
+    textarea:focus {
+      outline: none;
+      border: 1.7px solid var(--saffron-dark);
+      box-shadow: 0 0 0 3px var(--saffron)33;
+      background: #fff;
+      color: var(--deep-brown);
+    }
+    textarea::placeholder {
+      color: #bfae9b;
+      opacity: 1;
+      font-size: 1.07rem;
+      font-weight: 500;
+      letter-spacing: 0.1px;
+      filter: brightness(0.7) contrast(1.5);
+    }
+    [data-theme="dark"] textarea::placeholder {
+      color: #ffe082;
+      filter: brightness(1.2) contrast(1.5);
+    }
+    .ask-btn {
+      width: 75vw;
+      max-width: 1200px;
+      min-width: 270px;
+      padding: 0.7rem 0;
+      border: 2px solid var(--saffron);
+      border-radius: 14px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--saffron) 100%);
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7rem;
+      box-shadow: 0 2px 12px var(--saffron)33;
+      transition: background 0.25s, box-shadow 0.25s, transform 0.18s, border 0.2s, filter 0.3s;
+      position: relative;
+      overflow: hidden;
+      margin-top: 0.2em;
+      filter: drop-shadow(0 0 0 var(--saffron));
+      animation: askPulse 2.2s infinite alternate;
+    }
+    @keyframes askPulse {
+      0% { filter: drop-shadow(0 0 0 var(--saffron)); }
+      100% { filter: drop-shadow(0 0 12px var(--saffron)); }
+    }
+    .ask-btn:hover, .ask-btn:focus {
+      background: linear-gradient(90deg, var(--saffron) 0%, var(--accent) 100%);
+      box-shadow: 0 4px 24px var(--saffron)55;
+      transform: translateY(-2px) scale(1.025);
+      border-color: var(--saffron-dark);
+      filter: drop-shadow(0 0 18px var(--saffron));
+    }
+    .ask-btn:active {
+      transform: scale(0.98);
+    }
+    .ask-btn::after {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; right: 0; bottom: 0;
+      background: linear-gradient(120deg, #fff7e6 0%, var(--saffron)33 100%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 0;
+    }
+    .ask-btn:hover::after {
+      opacity: 0.13;
+    }
+    .feather-icon {
+      height: 1.2em;
+      width: auto;
+      margin-bottom: 2px;
+      margin-right: 0.018em;
+      vertical-align: middle;
+      filter: drop-shadow(0 1px 4px var(--saffron)55);
+    }
+    .ask-btn span, .ask-btn {
+      position: relative;
+      z-index: 1;
+    }
+    .quote {
+      color: var(--saffron-dark);
+      font-size: 0.97rem;
+      text-align: center;
+      margin-top: 1.2rem;
+      width: 75vw;
+      max-width: 1200px;
+      min-width: 270px;
+      font-weight: 500;
+      letter-spacing: 0.1px;
+      text-shadow: 0 1px 6px #fff3;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s cubic-bezier(.4,0,.2,1), transform 1s cubic-bezier(.4,0,.2,1);
+      background: var(--bg-card);
+      border-radius: 14px;
+      padding: 0.7em 0.7em 0.8em 0.7em;
+      border: 1.5px solid var(--saffron);
+      box-shadow: 0 2px 12px var(--saffron)22;
+    }
+    .quote.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .shloka-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      font-size: 0.98rem;
+      color: var(--saffron-dark);
+      font-weight: 600;
+      margin-bottom: 0.5em;
+      justify-content: center;
+    }
+    .shloka-label .info-icon {
+      font-size: 1.1em;
+      cursor: pointer;
+      position: relative;
+      color: var(--saffron-dark);
+      margin-left: 0.2em;
+    }
+    .shloka-label .tooltip {
+      display: none;
+      position: absolute;
+      left: 110%;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #fffbe7;
+      color: var(--deep-brown);
+      border: 1px solid var(--saffron);
+      border-radius: 7px;
+      padding: 0.5em 1em;
+      font-size: 0.97em;
+      white-space: nowrap;
+      z-index: 10;
+      box-shadow: 0 2px 8px #e6b80022;
+    }
+    .shloka-label .info-icon:hover + .tooltip, .shloka-label .info-icon:focus + .tooltip {
+      display: block;
+    }
+    .shloka {
+      font-family: 'Noto Serif Devanagari', serif;
+      font-size: 1.01rem;
+      color: var(--deep-brown);
+      margin-bottom: 0.5em;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      line-height: 1.5;
+    }
+    .translation {
+      font-family: 'Inter', Arial, sans-serif;
+      font-size: 0.93rem;
+      color: var(--saffron-dark);
+      margin-top: 0.2em;
+      font-style: italic;
+      letter-spacing: 0.1px;
+    }
+    .divider {
+      width: 28px;
+      height: 1.5px;
+      background: linear-gradient(90deg, var(--saffron) 0%, var(--accent) 100%);
+      margin: 0.7em auto 0.7em auto;
+      border-radius: 2px;
+      opacity: 0.7;
+    }
+    .om-fixed {
+      position: fixed;
+      top: 1.2em;
+      left: 1.5em;
+      font-size: 2.1rem;
+      color: var(--saffron-dark);
+      filter: drop-shadow(0 0 6px var(--saffron)44);
+      z-index: 11;
+      background: transparent;
+      user-select: none;
+      font-family: 'Noto Serif Devanagari', serif;
+    }
+    .gita-response {
+      margin-top: 0.7em;
+      background: var(--bg-card);
+      border-radius: 10px;
+      border: 1.2px solid var(--saffron);
+      box-shadow: 0 1px 6px #e6b80011;
+      padding: 0.7em 1em;
+      color: var(--deep-brown);
+      font-size: 0.97rem;
+      width: 75vw;
+      max-width: 1200px;
+      min-width: 270px;
+      word-break: break-word;
+      white-space: pre-line;
+      min-height: 1.5em;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .gita-response .user-question {
+      background: #fff6e0;
+      border-left: 3px solid var(--saffron);
+      padding: 0.5em 0.7em;
+      margin-bottom: 0.7em;
+      font-style: italic;
+      color: var(--saffron-dark);
+      font-weight: 500;
+      border-radius: 6px;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .gita-response .krishna-wisdom {
+      background: #fcf7e6;
+      border-radius: 7px;
+      padding: 0.7em 0.9em 0.7em 0.9em;
+      margin-bottom: 0.7em;
+      border: 1px solid #fbe6b0;
+      color: var(--deep-brown);
+      text-align: center;
+    }
+    .gita-response .shloka-card {
+      background: #fffbe7;
+      border: 1.5px solid #ffe082;
+      border-radius: 8px;
+      padding: 0.7em 1em;
+      margin-top: 0.5em;
+      color: var(--deep-brown);
+      font-size: 0.95em;
+    }
+    .gita-response .shloka-card .shloka-title {
+      font-weight: bold;
+      margin-bottom: 0.3em;
+      color: #a86a00;
+    }
+    .gita-response .shloka-card .shloka-sanskrit {
+      font-family: 'Noto Serif Devanagari', serif;
+      margin-bottom: 0.3em;
+      color: #8b3a1c;
+      font-size: 1.05em;
+    }
+    .gita-response .shloka-card .shloka-label {
+      font-weight: 600;
+      margin-top: 0.3em;
+      color: #b26a00;
+    }
+    .gita-response .shloka-card .shloka-transliteration {
+      font-style: italic;
+      margin-bottom: 0.3em;
+      color: #6d4c00;
+    }
+    .gita-response .shloka-card .shloka-translation {
+      color: #8b3a1c;
+      margin-top: 0.2em;
+    }
+    .gita-response.loading {
+      color: var(--saffron-dark);
+      font-style: italic;
+    }
+    .gita-response.error {
+      color: #b00020;
+      font-weight: 600;
+    }
+    .gita-response .shloka-section {
+      background: #fffbe7;
+      border: 1.5px solid #ffe082;
+      border-radius: 8px;
+      padding: 1em 1em 0.7em 1em;
+      margin: 0.7em 0 0.7em 0;
+      color: var(--deep-brown);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .gita-response .shloka-section .shloka-sanskrit {
+      font-family: 'Noto Serif Devanagari', serif;
+      font-size: 1.25em;
+      font-weight: bold;
+      color: #8b3a1c;
+      margin-bottom: 0.4em;
+      text-align: center;
+    }
+    .gita-response .shloka-section .shloka-transliteration {
+      font-size: 1.08em;
+      font-style: italic;
+      color: #6d4c00;
+      margin-bottom: 0.2em;
+      text-align: center;
+    }
+    .gita-response .translation-section {
+      background: #fffbe7;
+      border: 1.5px solid #ffe082;
+      border-radius: 8px;
+      padding: 0.7em 1em;
+      margin: 0.7em 0 0.7em 0;
+      color: var(--deep-brown);
+      text-align: center;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .gita-response .translation-section .translation-label {
+      font-weight: bold;
+      color: #b26a00;
+      margin-bottom: 0.3em;
+      display: block;
+      font-size: 1.08em;
+    }
+    .gita-response .context-section {
+      background: #fcf7e6;
+      border-radius: 7px;
+      padding: 0.7em 0.9em 0.7em 0.9em;
+      margin-top: 0.7em;
+      border: 1px solid #fbe6b0;
+      color: var(--deep-brown);
+      text-align: center;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    @media (max-width: 900px) {
+      .card, .gita-response, .quote, .ask-btn, .ask-btn#askAgainBtn {
+        width: 98vw;
+        min-width: 0;
+        max-width: 99vw;
+      }
+      .quote {
+        font-size: 0.91rem;
+        margin-top: 1rem;
+        padding: 0.4em 0.3em 0.5em 0.3em;
+      }
+      .kumar-one-regular {
+        font-size: 1.2rem;
+      }
+      .mandala-bg {
+         width: 95vw;
+         min-width: 120px;
+      }
+      .krishna-listening {
+        font-size: 0.85rem;
+        top: 0.7em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="om-fixed">ॐ</div>
+  <div class="dark-toggle" id="darkToggle" title="Toggle dark mode" tabindex="0" aria-label="Toggle dark mode">
+    <svg id="darkIcon" viewBox="0 0 24 24"><path d="M12 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1zm5.657 3.343a1 1 0 0 1 1.414 1.414l-.707.707a1 1 0 1 1-1.414-1.414l.707-.707zM21 11a1 1 0 1 1 0 2h-1a1 1 0 1 1 0-2h1zm-2.343 7.657a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 1 1 1.414-1.414l.707.707zM12 19a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1zm-7.657-2.343a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 1 1 1.414 1.414l-.707.707zM3 13a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2H3zm2.343-7.657a1 1 0 0 1 1.414-1.414l.707.707A1 1 0 1 1 6.05 6.05l-.707-.707z"/><circle cx="12" cy="12" r="5"/></svg>
+  </div>
+  <!-- Mandala SVG background -->
+  <svg class="mandala-bg" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="300" cy="300" r="290" stroke="#e6b800" stroke-width="2" fill="none"/>
+    <circle cx="300" cy="300" r="220" stroke="#b26a00" stroke-width="1.5" fill="none"/>
+    <circle cx="300" cy="300" r="150" stroke="#e5733b" stroke-width="1" fill="none"/>
+    <path d="M300 60 Q320 120 380 120 Q440 120 460 60" stroke="#e6b800" stroke-width="2" fill="none"/>
+    <path d="M300 540 Q280 480 220 480 Q160 480 140 540" stroke="#e6b800" stroke-width="2" fill="none"/>
+    <ellipse cx="300" cy="300" rx="100" ry="180" stroke="#e6b800" stroke-width="1.2" fill="none"/>
+    <ellipse cx="300" cy="300" rx="180" ry="100" stroke="#b26a00" stroke-width="1.2" fill="none"/>
+    <ellipse cx="300" cy="300" rx="60" ry="60" stroke="#e5733b" stroke-width="1.2" fill="none"/>
+  </svg>
+  <div class="container">
+    <div class="krishna-quote">“Whenever dharma declines and the purpose of life is forgotten, I manifest myself on earth.”</div>
+    <div class="card">
+      <div class="header-row">
+        <div class="lotus">🪷</div>
+        <h1 class="kumar-one-regular">Ask the Gita</h1>
+      </div>
+      <div class="subtitle">Find wisdom for your life's questions through the voice of Krishna</div>
+      <div class="trust-blurb"><span class="info">💡</span> Your answer will be given in the spirit and voice of Krishna from the Bhagavad Gita, referencing specific shlokas.</div>
+      <div class="prompt">What weighs on your heart today?</div>
+      <div class="examples-row">
+        <button class="example-btn" data-example="Why do I fear failure?"><span>🌀</span>Why do I fear failure?</button>
+        <button class="example-btn" data-example="Should I leave my job?"><span>🔥</span>Should I leave my job?</button>
+        <button class="example-btn" data-example="How do I find peace?"><span>🌿</span>How do I find peace?</button>
+        <button class="example-btn" data-example="How do I deal with loss?"><span>💧</span>How do I deal with loss?</button>
+      </div>
+      <textarea id="userQuestion" placeholder="e.g., Why do I suffer? Should I follow my passion? How do I deal with failure?"></textarea>
+      <button class="ask-btn" id="askBtn">
+        <img src="Feather.png" alt="Peacock Feather" class="feather-icon" />
+        Ask Krishna
+      </button>
+      <div id="gita-response" class="gita-response" style="display:none;"></div>
+      <button id="askAgainBtn" class="ask-btn" style="display:none;margin-top:1em;">Ask Again</button>
+    </div>
+    <div class="quote">
+      <div class="shloka-label">
+        <span>🕉 Verse of the Day — Bhagavad Gita 2.47</span>
+        <span class="info-icon" tabindex="0" aria-label="Info">&#9432;
+          <span class="tooltip">This verse is auto-rotated for daily inspiration.</span>
+        </span>
+      </div>
+      <div class="shloka">कर्मण्येवाधिकारस्ते मा फलेषु कदाचन ।<br>मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि ॥</div>
+      <div class="divider"></div>
+      <div class="translation">"You have the right to perform your actions, but not to the fruits of your actions. Never be attached to the results of your actions, nor be attached to inaction."</div>
+    </div>
+  </div>
+  <script>
+    // Fade-in effect for card and quote
+    window.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('.card').classList.add('visible');
+      setTimeout(function() {
+        document.querySelector('.quote').classList.add('visible');
+      }, 400);
+    });
+    // Example question click handler
+    document.querySelectorAll('.example-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.getElementById('userQuestion').value = this.getAttribute('data-example');
+        document.getElementById('userQuestion').focus();
+      });
+    });
+    // Dark mode toggle
+    const darkToggle = document.getElementById('darkToggle');
+    const html = document.documentElement;
+    function setTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      localStorage.setItem('askgita-theme', theme);
+    }
+    darkToggle.addEventListener('click', function() {
+      setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+    darkToggle.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      }
+    });
+    // Load theme from storage
+    (function() {
+      const theme = localStorage.getItem('askgita-theme');
+      if (theme) setTheme(theme);
+    })();
+    // Ask Krishna button handler
+    const askBtn = document.getElementById('askBtn');
+    const askAgainBtn = document.getElementById('askAgainBtn');
+    const userQuestion = document.getElementById('userQuestion');
+    const gitaResponse = document.getElementById('gita-response');
+
+    function resetAskForm() {
+      userQuestion.value = '';
+      userQuestion.disabled = false;
+      askBtn.style.display = '';
+      gitaResponse.style.display = 'none';
+      askAgainBtn.style.display = 'none';
+      userQuestion.focus();
+    }
+
+    askAgainBtn.addEventListener('click', resetAskForm);
+
+    askBtn.addEventListener('click', async function() {
+      const question = userQuestion.value.trim();
+      if (!question) {
+        gitaResponse.textContent = 'Please enter a question.';
+        gitaResponse.className = 'gita-response error';
+        gitaResponse.style.display = '';
+        return;
+      }
+      gitaResponse.textContent = 'Krishna is contemplating your question...';
+      gitaResponse.className = 'gita-response loading';
+      gitaResponse.style.display = '';
+      askBtn.style.display = 'none';
+      userQuestion.disabled = true;
+      askAgainBtn.style.display = 'none';
+      try {
+        const res = await fetch('http://127.0.0.1:5000/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question })
+        });
+        const data = await res.json();
+        if (res.ok && data.wisdom && data.shloka && data.explanation) {
+          gitaResponse.innerHTML = formatGitaAnswer(question, data.wisdom, data.shloka, data.explanation);
+          gitaResponse.className = 'gita-response';
+          gitaResponse.style.display = '';
+          askAgainBtn.style.display = '';
+        } else {
+          gitaResponse.textContent = data.error || 'An error occurred.';
+          gitaResponse.className = 'gita-response error';
+          gitaResponse.style.display = '';
+          askAgainBtn.style.display = '';
+        }
+      } catch (err) {
+        gitaResponse.textContent = 'Could not connect to Krishna. Please try again later.';
+        gitaResponse.className = 'gita-response error';
+        gitaResponse.style.display = '';
+        askAgainBtn.style.display = '';
+      }
+    });
+
+    function formatGitaAnswer(question, wisdom, shloka, explanation) {
+      // Helper to bold *text* and remove asterisks
+      function boldAsterisks(str) {
+        return str.replace(/\*([^*]+)\*/g, '<b>$1</b>');
+      }
+      // Helper to parse shloka block into components
+      function parseShlokaBlock(shlokaText) {
+        // Parse using strict labels
+        const chapterMatch = shlokaText.match(/Chapter:\s*([^\n]*)/);
+        const sanskritMatch = shlokaText.match(/Sanskrit:\s*([\s\S]*?)Transliteration:/);
+        const translitMatch = shlokaText.match(/Transliteration:\s*([\s\S]*?)Translation:/);
+        const translationMatch = shlokaText.match(/Translation:\s*([\s\S]*)/);
+        return {
+          chapterVerse: chapterMatch ? chapterMatch[1].trim() : '',
+          sanskrit: sanskritMatch ? sanskritMatch[1].trim() : '',
+          translit: translitMatch ? translitMatch[1].trim() : '',
+          translation: translationMatch ? translationMatch[1].trim() : ''
+        };
+      }
+      let html = '';
+      html += `<div class="user-question"><b>Your Question:</b><br><span>"${question.replace(/</g,'&lt;').replace(/>/g,'&gt;')}"</span></div>`;
+      if (wisdom) html += `<div class="krishna-wisdom"><b>✨ Krishna's Wisdom</b><br>${boldAsterisks(wisdom).replace(/\n/g,'<br>')}</div>`;
+      if (shloka) {
+        const { chapterVerse, sanskrit, translit, translation } = parseShlokaBlock(shloka);
+        html += `<div class="shloka-section">`;
+        if (chapterVerse) html += `<div class="shloka-label">${chapterVerse}</div>`;
+        if (sanskrit) html += `<div class="shloka-sanskrit" style="margin-bottom: 1.5em;">${sanskrit}</div>`;
+        if (translit) html += `<div class="shloka-transliteration" style="margin-bottom: 1.5em;">${translit}</div>`;
+        if (translation) html += `<div class="shloka-translation" style="margin-bottom: 1.5em;">${translation}</div>`;
+        html += `</div>`;
+      }
+      if (explanation) html += `<div class="context-section" style="margin-top: 2em;">${boldAsterisks(explanation).replace(/\n/g,'<br>')}</div>`;
+      return html;
+    }
+  </script>
+</body>
+</html>
