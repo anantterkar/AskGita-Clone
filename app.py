@@ -1,8 +1,8 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory
 from gita_bot import chain_krishna, chain_shloka, chain_explanation
 from flask_cors import CORS
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='.')
 CORS(app)
 
 @app.route('/ask', methods=['POST'])
@@ -39,6 +39,10 @@ def ask_gita():
 @app.route('/', methods=['GET'])
 def home():
     return render_template('index.html')
+
+@app.route('/Feather.png')
+def feather_png():
+    return send_from_directory('.', 'Feather.png')
     
 if __name__ == '__main__':
     app.run(debug=True)
