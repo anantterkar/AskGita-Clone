@@ -769,11 +769,12 @@
       userQuestion.disabled = true;
       askAgainBtn.style.display = 'none';
       try {
-        const res = await fetch('http://127.0.0.1:5000/ask', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question })
-        });
+        const res = await fetch('/ask', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ question })
+});
+
         const data = await res.json();
         if (res.ok && data.wisdom && data.shloka && data.explanation) {
           gitaResponse.innerHTML = formatGitaAnswer(question, data.wisdom, data.shloka, data.explanation);
