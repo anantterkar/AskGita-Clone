@@ -36,9 +36,13 @@ def ask_gita():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
-@app.route('/', methods=['GET'])
-def home():
-    return send_from_directory('.','Index.html')
+@app.route('/')
+def landing():
+    return render_template('Landing.html')
+
+@app.route('/askgita')
+def askgita():
+    return render_template('Index.html')
 
 @app.route('/Feather.png')
 def feather_png():
