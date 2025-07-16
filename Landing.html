@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AskGita - Welcome</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Kumar+One&family=Noto+Serif+Devanagari:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --saffron: #e6b800;
+      --deep-brown: #8b3a1c;
+      --saffron-dark: #b26a00;
+      --peacock-blue: #1a4d4d;
+      --blue-accent: #3b82f6;
+      --bg-light: #fff8e1;
+      --bg-card: rgba(255,255,255,0.85);
+      --bg-dark: #181818;
+      --card-dark: #232323cc;
+      --text-dark: #f7e7c1;
+      --text-light: #8b3a1c;
+      --accent: #fbb117;
+      --shadow: 0 4px 32px #e6b80022, 0 1.5px 8px 0 #8b3a1c11;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Inter', Arial, sans-serif;
+      background: linear-gradient(120deg, var(--bg-light) 0%, var(--blue-accent) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+      animation: bgMove 12s ease-in-out infinite;
+    }
+    @keyframes bgMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .mandala-bg {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      opacity: 0.09;
+      pointer-events: none;
+      width: 700vw;
+      max-width: 700px;
+      min-width: 320px;
+      height: auto;
+    }
+    .landing-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      width: 100vw;
+      z-index: 1;
+      position: relative;
+      margin-top: 1.2rem;
+    }
+    .krishna-img {
+      width: 270px;
+      max-width: 60vw;
+      border-radius: 50%;
+      box-shadow: 0 8px 40px var(--peacock-blue), 0 2px 12px var(--saffron-dark)33;
+      border: 6px solid var(--blue-accent);
+      margin-bottom: 2.5em;
+      animation: floatKrishna 3.5s ease-in-out infinite alternate;
+      background: #fff;
+    }
+    @keyframes floatKrishna {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-18px); }
+    }
+    .main-title {
+      font-family: "Kumar One", serif;
+      font-size: 2.5rem;
+      color: var(--deep-brown);
+      text-shadow: 0 2px 8px var(--saffron)22;
+      margin-bottom: 0.5rem;
+      letter-spacing: 2px;
+      text-align: center;
+      animation: fadeIn 1.2s;
+    }
+    .subtitle {
+      color: var(--blue-accent);
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+      text-shadow: 0 1px 6px #fff3;
+      font-style: italic;
+      animation: fadeIn 1.8s;
+    }
+    .spiritual-quote {
+      font-family: 'Noto Serif Devanagari', serif;
+      font-size: 1.1rem;
+      color: var(--saffron-dark);
+      margin-bottom: 2.2em;
+      margin-top: 0.3em;
+      text-align: center;
+      font-style: italic;
+      opacity: 0.92;
+      animation: fadeIn 2.2s;
+    }
+    .cta-btn {
+      background: linear-gradient(90deg, var(--blue-accent) 0%, var(--saffron) 100%);
+      color: #fff;
+      border: none;
+      border-radius: 18px;
+      padding: 1.1em 2.7em;
+      font-size: 1.25rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 24px var(--saffron)55;
+      transition: background 0.25s, box-shadow 0.25s, transform 0.18s, border 0.2s, filter 0.3s;
+      margin-top: 2.5em;
+      margin-bottom: 1.5em;
+      animation: pulse 2.2s infinite alternate;
+      letter-spacing: 1px;
+    }
+    @keyframes pulse {
+      0% { filter: drop-shadow(0 0 0 var(--saffron)); }
+      100% { filter: drop-shadow(0 0 18px var(--blue-accent)); }
+    }
+    .cta-btn:hover, .cta-btn:focus {
+      background: linear-gradient(90deg, var(--saffron) 0%, var(--blue-accent) 100%);
+      box-shadow: 0 8px 32px var(--blue-accent)55;
+      transform: translateY(-2px) scale(1.04);
+      outline: none;
+    }
+    .features-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2.5em;
+      margin-top: 2.5em;
+      margin-bottom: 2.5em;
+      animation: fadeIn 2.5s;
+    }
+    .feature-card {
+      background: var(--bg-card);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 1.5em 1.2em;
+      min-width: 220px;
+      max-width: 320px;
+      text-align: center;
+      border: 2.5px solid var(--saffron);
+      color: var(--deep-brown);
+      font-size: 1.08rem;
+      font-weight: 500;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card:hover {
+      transform: translateY(-8px) scale(1.04);
+      box-shadow: 0 8px 32px var(--blue-accent)33;
+    }
+    .feature-icon {
+      font-size: 2.2rem;
+      margin-bottom: 0.5em;
+      color: var(--blue-accent);
+      animation: iconPop 1.5s infinite alternate;
+    }
+    @keyframes iconPop {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.13); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 900px) {
+      .landing-container {
+        width: 99vw;
+      }
+      .features-row {
+        flex-direction: column;
+        gap: 1.2em;
+      }
+      .krishna-img {
+        width: 70vw;
+        min-width: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Mandala SVG background -->
+  <svg class="mandala-bg" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="300" cy="300" r="290" stroke="#e6b800" stroke-width="2" fill="none"/>
+    <circle cx="300" cy="300" r="220" stroke="#b26a00" stroke-width="1.5" fill="none"/>
+    <circle cx="300" cy="300" r="150" stroke="#3b82f6" stroke-width="1" fill="none"/>
+    <ellipse cx="300" cy="300" rx="100" ry="180" stroke="#e6b800" stroke-width="1.2" fill="none"/>
+    <ellipse cx="300" cy="300" rx="180" ry="100" stroke="#b26a00" stroke-width="1.2" fill="none"/>
+    <ellipse cx="300" cy="300" rx="60" ry="60" stroke="#3b82f6" stroke-width="1.2" fill="none"/>
+  </svg>
+  <div class="landing-container">
+    <img src="Krishna.jpg" alt="Krishna" class="krishna-img" />
+    <div class="main-title">AskGita</div>
+    <div class="subtitle">Find wisdom, peace, and guidance from the Bhagavad Gita.<br>Let Krishna's words illuminate your path.</div>
+    <div class="spiritual-quote">“Whenever dharma declines and the purpose of life is forgotten, I manifest myself on earth.”<br><span style="font-size:0.9em; color:var(--blue-accent);">— Bhagavad Gita 4.7</span></div>
+    <button class="cta-btn" onclick="window.location.href='/askgita'">Enter the Experience</button>
+    <div class="features-row">
+      <div class="feature-card">
+        <div class="feature-icon">🪷</div>
+        Personalized answers to your deepest questions
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📜</div>
+        Authentic shlokas in Sanskrit, transliteration, and translation
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✨</div>
+        Spiritual explanations rooted in the Gita's wisdom
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌈</div>
+        Modern, beautiful, and immersive experience
+      </div>
+    </div>
+  </div>
+</body>
+</html> 
