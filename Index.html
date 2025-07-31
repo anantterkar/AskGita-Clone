@@ -625,6 +625,141 @@
       max-width: 100%;
       box-sizing: border-box;
     }
+    .gita-chat-history {
+      width: 75vw;
+      max-width: 1200px;
+      min-width: 270px;
+      margin-top: 1.5em;
+      margin-bottom: 1.5em;
+      padding: 1em;
+      background: var(--bg-card);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow-y: auto;
+      max-height: 300px; /* Adjust as needed */
+      border: 1.5px solid var(--saffron);
+      display: flex;
+      flex-direction: column;
+      gap: 0.7em;
+    }
+    .gita-chat-history .user-question {
+      background: #fff6e0;
+      border-left: 3px solid var(--saffron);
+      padding: 0.5em 0.7em;
+      margin-bottom: 0.7em;
+      font-style: italic;
+      color: var(--saffron-dark);
+      font-weight: 500;
+      border-radius: 6px;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .gita-chat-history .krishna-wisdom {
+      background: #fcf7e6;
+      border-radius: 7px;
+      padding: 0.7em 0.9em 0.7em 0.9em;
+      margin-bottom: 0.7em;
+      border: 1px solid #fbe6b0;
+      color: var(--deep-brown);
+      text-align: center;
+    }
+    .gita-chat-history .shloka-card {
+      background: #fffbe7;
+      border: 1.5px solid #ffe082;
+      border-radius: 8px;
+      padding: 0.7em 1em;
+      margin-top: 0.5em;
+      color: var(--deep-brown);
+      font-size: 0.95em;
+    }
+    .gita-chat-history .shloka-card .shloka-title {
+      font-weight: bold;
+      margin-bottom: 0.3em;
+      color: #a86a00;
+    }
+    .gita-chat-history .shloka-card .shloka-sanskrit {
+      font-family: 'Noto Serif Devanagari', serif;
+      margin-bottom: 0.3em;
+      color: #8b3a1c;
+      font-size: 1.05em;
+    }
+    .gita-chat-history .shloka-card .shloka-label {
+      font-weight: 600;
+      margin-top: 0.3em;
+      color: #b26a00;
+    }
+    .gita-chat-history .shloka-card .shloka-transliteration {
+      font-style: italic;
+      margin-bottom: 0.3em;
+      color: #6d4c00;
+    }
+    .gita-chat-history .shloka-card .shloka-translation {
+      color: #8b3a1c;
+      margin-top: 0.2em;
+    }
+    .gita-chat-history .shloka-section {
+      background: #fffbe7;
+      border: 1.5px solid #ffe082;
+      border-radius: 8px;
+      padding: 1em 1em 0.7em 1em;
+      margin: 0.7em 0 0.7em 0;
+      color: var(--deep-brown);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .gita-chat-history .shloka-section .shloka-sanskrit {
+      font-family: 'Noto Serif Devanagari', serif;
+      font-size: 1.25em;
+      font-weight: bold;
+      color: #8b3a1c;
+      margin-bottom: 0.4em;
+      text-align: center;
+    }
+    .gita-chat-history .shloka-section .shloka-transliteration {
+      font-size: 1.08em;
+      font-style: italic;
+      color: #6d4c00;
+      margin-bottom: 0.2em;
+      text-align: center;
+    }
+    .gita-chat-history .translation-section {
+      background: #fffbe7;
+      border: 1.5px solid #ffe082;
+      border-radius: 8px;
+      padding: 0.7em 1em;
+      margin: 0.7em 0 0.7em 0;
+      color: var(--deep-brown);
+      text-align: center;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .gita-chat-history .translation-section .translation-label {
+      font-weight: bold;
+      color: #b26a00;
+      margin-bottom: 0.3em;
+      display: block;
+      font-size: 1.08em;
+    }
+    .gita-chat-history .context-section {
+      background: #fcf7e6;
+      border-radius: 7px;
+      padding: 0.7em 0.9em 0.7em 0.9em;
+      margin-top: 0.7em;
+      border: 1px solid #fbe6b0;
+      color: var(--deep-brown);
+      text-align: center;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
     @media (max-width: 900px) {
       .card, .gita-response, .quote, .ask-btn, .ask-btn#askAgainBtn {
         width: 98vw;
@@ -646,6 +781,11 @@
       .krishna-listening {
         font-size: 0.85rem;
         top: 0.7em;
+      }
+      .gita-chat-history {
+        width: 98vw;
+        min-width: 0;
+        max-width: 99vw;
       }
     }
   </style>
@@ -684,22 +824,22 @@
       </div>
       <textarea id="userQuestion" placeholder="e.g., Why do I suffer? Should I follow my passion? How do I deal with failure?"></textarea>
       <button class="ask-btn" id="askBtn">
-        <img src="Static/Feather.png" alt="Peacock Feather" class="feather-icon" />
+        <img src="/static/Feather.png" alt="Peacock Feather" class="feather-icon" />
         Ask Krishna
       </button>
       <div id="gita-response" class="gita-response" style="display:none;"></div>
-      <button id="askAgainBtn" class="ask-btn" style="display:none;margin-top:1em;">Ask Again</button>
+      <div id="chat-history" class="gita-chat-history"></div>
     </div>
     <div class="quote">
       <div class="shloka-label">
-        <span>🕉 Verse of the Day — Bhagavad Gita 2.47</span>
+        <span>🕉 Verse of the Day — Bhagavad Gita {{ verse['verse_id'] }}</span>
         <span class="info-icon" tabindex="0" aria-label="Info">&#9432;
           <span class="tooltip">This verse is auto-rotated for daily inspiration.</span>
         </span>
       </div>
-      <div class="shloka">कर्मण्येवाधिकारस्ते मा फलेषु कदाचन ।<br>मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि ॥</div>
+      <div class="shloka">{{ verse['text']|safe }}</div>
       <div class="divider"></div>
-      <div class="translation">"You have the right to perform your actions, but not to the fruits of your actions. Never be attached to the results of your actions, nor be attached to inaction."</div>
+      <div class="translation">{{ verse['translation'] }}</div>
     </div>
   </div>
   <script>
@@ -739,20 +879,33 @@
     })();
     // Ask Krishna button handler
     const askBtn = document.getElementById('askBtn');
-    const askAgainBtn = document.getElementById('askAgainBtn');
     const userQuestion = document.getElementById('userQuestion');
     const gitaResponse = document.getElementById('gita-response');
+    const chatHistory = document.getElementById('chat-history');
 
     function resetAskForm() {
       userQuestion.value = '';
       userQuestion.disabled = false;
       askBtn.style.display = '';
       gitaResponse.style.display = 'none';
-      askAgainBtn.style.display = 'none';
+      // askAgainBtn.style.display = 'none'; // Removed as per new logic
       userQuestion.focus();
     }
 
-    askAgainBtn.addEventListener('click', resetAskForm);
+    // Function to append a new Q&A to the chat history
+    function appendToChatHistory(question, answer) {
+      const userQuestionDiv = document.createElement('div');
+      userQuestionDiv.className = 'user-question';
+      userQuestionDiv.textContent = `Your Question: "${question.replace(/</g,'&lt;').replace(/>/g,'&gt;')}"`;
+
+      const krishnaWisdomDiv = document.createElement('div');
+      krishnaWisdomDiv.className = 'krishna-wisdom';
+      krishnaWisdomDiv.innerHTML = `<b>✨ Krishna's Wisdom</b><br>${answer.replace(/\n/g,'<br>')}`;
+
+      //chatHistory.appendChild(userQuestionDiv);
+      chatHistory.appendChild(krishnaWisdomDiv);
+      chatHistory.scrollTop = chatHistory.scrollHeight; // Auto-scroll to latest message
+    }
 
     askBtn.addEventListener('click', async function() {
       const question = userQuestion.value.trim();
@@ -767,7 +920,8 @@
       gitaResponse.style.display = '';
       askBtn.style.display = 'none';
       userQuestion.disabled = true;
-      askAgainBtn.style.display = 'none';
+      // askAgainBtn.style.display = 'none'; // Removed as per new logic
+
       try {
         const res = await fetch('/ask', {
   method: 'POST',
@@ -777,21 +931,22 @@
 
         const data = await res.json();
         if (res.ok && data.wisdom && data.shloka && data.explanation) {
-          gitaResponse.innerHTML = formatGitaAnswer(question, data.wisdom, data.shloka, data.explanation);
-          gitaResponse.className = 'gita-response';
-          gitaResponse.style.display = '';
-          askAgainBtn.style.display = '';
+          const formattedAnswer = formatGitaAnswer(question, data.wisdom, data.shloka, data.explanation);
+          gitaResponse.style.display = 'none'; // Hide the main response area after answer
+          appendToChatHistory(question, formattedAnswer);
         } else {
           gitaResponse.textContent = data.error || 'An error occurred.';
           gitaResponse.className = 'gita-response error';
           gitaResponse.style.display = '';
-          askAgainBtn.style.display = '';
+          // askAgainBtn.style.display = ''; // Removed as per new logic
+          appendToChatHistory(question, `<div class="gita-response error">${data.error || 'An error occurred.'}</div>`);
         }
       } catch (err) {
         gitaResponse.textContent = 'Could not connect to Krishna. Please try again later.';
         gitaResponse.className = 'gita-response error';
         gitaResponse.style.display = '';
-        askAgainBtn.style.display = '';
+        // askAgainBtn.style.display = ''; // Removed as per new logic
+        appendToChatHistory(question, `<div class="gita-response error">Could not connect to Krishna. Please try again later.</div>`);
       }
     });
 
