@@ -3,7 +3,10 @@ from langchain.prompts import ChatPromptTemplate
 import os
 import requests
 
-os.environ["GROQ_API_KEY"] = "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"  # <-- Replace with your actual Groq API key
+# Read the API key from a private file
+api_key_path = r"C:\Users\adibr\Desktop\AskGita\.gitignore\api_ket.txt"
+with open(api_key_path, 'r', encoding='utf-8') as f:
+    os.environ["GROQ_API_KEY"] = f.read().strip()
 
 llm = ChatGroq(model="llama3-8b-8192", temperature=1)  # You can change the model if needed
 
@@ -69,8 +72,30 @@ def build_conversation_prompt(history, user_input):
     conversation += f"Seeker: {user_input}\nKrishna:"
     return conversation
 
+def test_conversation_context():
+    """
+    Test the build_conversation_prompt function to ensure context is maintained.
+    """
+    # Simulate a conversation history
+    history = [
+        ("What is the nature of the soul?", "The soul is eternal, indestructible, and beyond the physical body."),
+        ("Does the soul experience pain?", "The soul is untouched by pain or pleasure; these belong to the body and mind."),
+    ]
+    user_input = "So why do I feel suffering?"
+    prompt = build_conversation_prompt(history, user_input)
+    print("Prompt sent to model:\n", prompt)
+    # Optionally, invoke the model:
+    try:
+        response = chain_krishna_conversation.invoke({"conversation": prompt})
+        print("\nModel response:\n", response.content if hasattr(response, "content") else response)
+    except Exception as e:
+        print(f"[Error invoking model] {e}")
+
 # Terminal chat loop
 if __name__ == "__main__":
+    # Uncomment the next line to run the test instead of the chat loop
+    test_conversation_context()
+    # Or keep the chat loop as default
     print("\nWelcome, sincere soul. Ask your questions to Krishna (type 'exit' or 'quit' to leave):\n")
     history = []
     while True:
