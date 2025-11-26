@@ -1,6 +1,7 @@
 import json
 import datetime
 import random
+import csv
 
 def get_verse_of_the_day():
     """
@@ -10,6 +11,13 @@ def get_verse_of_the_day():
     # Load all verses from verse.json
     with open('verse.json', 'r', encoding='utf-8') as f:
         verses = json.load(f)
+    
+    # Load English translations from CSV
+    translations_map = {}
+    with open('gita_verses_translations.csv', 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            translations_map[int(row['verse_id'])] = row['description']
     
     # Get today's date as a string (YYYY-MM-DD)
     today = datetime.date.today().strftime('%Y-%m-%d')
@@ -25,11 +33,12 @@ def get_verse_of_the_day():
     # Format the verse data for verse_of_the_day.json
     verse_data = {
         "text": selected_verse["text"].strip(),
-        "translation": selected_verse.get("word_meanings", "").strip(),
+        "transliteration": selected_verse.get("transliteration", "").strip(),
+        "word_meanings": selected_verse.get("word_meanings", "").strip(),
+        "translation": translations_map.get(selected_verse["id"], "").strip(),
         "verse_id": selected_verse["id"],
         "chapter_number": selected_verse["chapter_number"],
         "verse_number": selected_verse["verse_number"],
-        "transliteration": selected_verse.get("transliteration", "").strip(),
         "date": today
     }
     
