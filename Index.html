@@ -90,12 +90,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
+      height: 100vh;
       width: 100vw;
       z-index: 1;
       position: relative;
-      margin-top: 1.2rem;
+      padding: 1rem 0;
+      box-sizing: border-box;
     }
     .krishna-quote {
       font-family: 'Noto Serif Devanagari', serif;
@@ -111,25 +111,93 @@
       background: var(--bg-card);
       border-radius: 24px;
       box-shadow: var(--shadow);
-      padding: 1.6rem 1rem 1.1rem 1rem;
+      padding: 1rem 1rem 0.5rem 1rem;
       width: 75vw;
       max-width: 1200px;
       min-width: 270px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      align-items: center;
       border: 2.5px solid var(--saffron);
-      box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
       transition: box-shadow 0.3s, background 0.5s, border 0.3s;
       opacity: 0;
       transform: translateY(30px);
       transition: opacity 0.8s cubic-bezier(.4,0,.2,1), transform 0.8s cubic-bezier(.4,0,.2,1);
+      flex: 1;
+      overflow: hidden;
     }
     .card.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+    .chat-messages-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      scroll-behavior: smooth;
+    }
+    .message {
+      display: flex;
+      gap: 0.7rem;
+      max-width: 80%;
+      animation: messageSlide 0.3s ease-out;
+    }
+    @keyframes messageSlide {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .message.user {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+    .message.krishna {
+      align-self: flex-start;
+    }
+    .message-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .message.user .message-avatar {
+      background: linear-gradient(135deg, var(--saffron) 0%, var(--accent) 100%);
+    }
+    .message.krishna .message-avatar {
+      background: linear-gradient(135deg, var(--peacock-blue) 0%, #2d7a7a 100%);
+    }
+    .message-bubble {
+      padding: 0.8rem 1rem;
+      border-radius: 16px;
+      position: relative;
+      word-wrap: break-word;
+    }
+    .message.user .message-bubble {
+      background: linear-gradient(135deg, #fff6e0 0%, #fffbe7 100%);
+      border: 1px solid var(--saffron);
+      color: var(--deep-brown);
+      border-bottom-right-radius: 4px;
+    }
+    .message.krishna .message-bubble {
+      background: linear-gradient(135deg, #fcf7e6 0%, #fff 100%);
+      border: 1px solid #fbe6b0;
+      color: var(--deep-brown);
+      border-bottom-left-radius: 4px;
+    }
+    .input-container {
+      display: flex;
+      gap: 0.5rem;
+      padding: 1rem;
+      border-top: 2px solid var(--saffron);
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 0 0 22px 22px;
     }
     .header-row {
       display: flex;
@@ -244,15 +312,15 @@
       outline: none;
     }
     textarea {
-      width: 100%;
-      min-height: 60px;
-      border-radius: 14px;
+      flex: 1;
+      min-height: 50px;
+      max-height: 120px;
+      border-radius: 24px;
       border: 1.7px solid var(--saffron);
-      padding: 1.1rem;
-      font-size: 0.97rem;
+      padding: 0.8rem 1rem;
+      font-size: 0.95rem;
       font-family: inherit;
       resize: none;
-      margin-bottom: 1.7rem;
       background: rgba(250, 246, 240, 0.92);
       color: var(--deep-brown);
       box-sizing: border-box;
@@ -283,28 +351,21 @@
       filter: brightness(1.2) contrast(1.5);
     }
     .ask-btn {
-      width: 75vw;
-      max-width: 1200px;
-      min-width: 270px;
-      padding: 0.7rem 0;
-      border: 2px solid var(--saffron);
-      border-radius: 14px;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 24px;
       background: linear-gradient(90deg, var(--accent) 0%, var(--saffron) 100%);
       color: #fff;
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.7rem;
+      gap: 0.5rem;
       box-shadow: 0 2px 12px var(--saffron)33;
-      transition: background 0.25s, box-shadow 0.25s, transform 0.18s, border 0.2s, filter 0.3s;
-      position: relative;
-      overflow: hidden;
-      margin-top: 0.2em;
-      filter: drop-shadow(0 0 0 var(--saffron));
-      animation: askPulse 2.2s infinite alternate;
+      transition: background 0.25s, box-shadow 0.25s, transform 0.18s;
+      flex-shrink: 0;
     }
     @keyframes askPulse {
       0% { filter: drop-shadow(0 0 0 var(--saffron)); }
@@ -770,26 +831,23 @@
   <div class="container">
     <div class="krishna-quote">“Whenever dharma declines and the purpose of life is forgotten, I manifest myself on earth.”</div>
     <div class="card">
-      <div class="header-row">
+      <div class="header-row" style="margin-bottom: 0.5rem;">
         <div class="lotus">🪷</div>
         <h1 class="kumar-one-regular">Ask the Gita</h1>
       </div>
-      <div class="subtitle">Find wisdom for your life's questions through the voice of Krishna</div>
-      <div class="trust-blurb"><span class="info">💡</span> Your answer will be given in the spirit and voice of Krishna from the Bhagavad Gita, referencing specific shlokas.</div>
-      <div class="prompt">What weighs on your heart today?</div>
-      <div class="examples-row">
-        <button class="example-btn" data-example="Why do I fear failure?"><span>🌀</span>Why do I fear failure?</button>
-        <button class="example-btn" data-example="Should I leave my job?"><span>🔥</span>Should I leave my job?</button>
-        <button class="example-btn" data-example="How do I find peace?"><span>🌿</span>How do I find peace?</button>
-        <button class="example-btn" data-example="How do I deal with loss?"><span>💧</span>How do I deal with loss?</button>
+      <div class="chat-messages-container" id="chatMessages">
+        <div class="welcome-message" style="text-align: center; padding: 2rem 1rem; color: var(--saffron-dark); opacity: 0.9;">
+          <p style="font-size: 1.1rem; margin-bottom: 1rem; font-style: italic;">"Whenever dharma declines, I manifest myself on earth."</p>
+          <p style="font-size: 0.95rem;">Ask your questions to Krishna and receive wisdom from the Bhagavad Gita.</p>
+        </div>
       </div>
-      <textarea id="userQuestion" placeholder="e.g., Why do I suffer? Should I follow my passion? How do I deal with failure?"></textarea>
-      <button class="ask-btn" id="askBtn">
-        <img src="/static/Feather.png" alt="Peacock Feather" class="feather-icon" />
-        Ask Krishna
-      </button>
-      <div id="gita-response" class="gita-response" style="display:none;"></div>
-      <div id="chat-history" class="gita-chat-history"></div>
+      <div class="input-container">
+        <textarea id="userQuestion" placeholder="Ask your question to Krishna..." rows="1"></textarea>
+        <button class="ask-btn" id="askBtn">
+          <img src="/static/Feather.png" alt="Peacock Feather" class="feather-icon" style="height: 1.2em; width: auto;" />
+          Send
+        </button>
+      </div>
     </div>
     <div class="quote">
       <div class="shloka-label">
@@ -814,55 +872,65 @@
     // Example question click handler
     document.querySelectorAll('.example-btn').forEach(btn => {
       btn.addEventListener('click', function() {
-        document.getElementById('userQuestion').value = this.getAttribute('data-example');
+        const question = this.getAttribute('data-example');
+        document.getElementById('userQuestion').value = question;
         document.getElementById('userQuestion').focus();
+        // Hide welcome message
+        const welcomeMsg = document.querySelector('.welcome-message');
+        if (welcomeMsg) welcomeMsg.style.display = 'none';
       });
     });
-    // Ask Krishna button handler
+    
+    // Chat elements
     const askBtn = document.getElementById('askBtn');
     const userQuestion = document.getElementById('userQuestion');
-    const gitaResponse = document.getElementById('gita-response');
-    const chatHistory = document.getElementById('chat-history');
+    const chatMessages = document.getElementById('chatMessages');
     
     // Track conversation history for context
     let conversationHistory = []; // Array of [user_msg, bot_msg] tuples
     let messageCount = 0; // Track number of messages for auto-shloka
 
-    function resetAskForm() {
-      userQuestion.value = '';
-      userQuestion.disabled = false;
-      askBtn.style.display = '';
-      gitaResponse.style.display = 'none';
-      userQuestion.focus();
+    function addUserMessage(text) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message user';
+      messageDiv.innerHTML = `
+        <div class="message-avatar">👤</div>
+        <div class="message-bubble">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+      `;
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    // Function to append a new Q&A to the chat history
-    function appendToChatHistory(question, wisdom, shloka, explanation) {
-      const container = document.createElement('div');
-      container.style.marginBottom = '1em';
+    function addKrishnaMessage(text, shloka, explanation) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message krishna';
       
-      const userQuestionDiv = document.createElement('div');
-      userQuestionDiv.className = 'user-question';
-      userQuestionDiv.textContent = `Your Question: "${question.replace(/</g,'&lt;').replace(/>/g,'&gt;')}"`;
-
-      const krishnaWisdomDiv = document.createElement('div');
-      krishnaWisdomDiv.className = 'krishna-wisdom';
-      krishnaWisdomDiv.innerHTML = `<b>✨ Krishna's Wisdom</b><br>${wisdom.replace(/\n/g,'<br>')}`;
-
-      container.appendChild(userQuestionDiv);
-      container.appendChild(krishnaWisdomDiv);
+      let content = `<div class="message-bubble">${text.replace(/\n/g,'<br>')}</div>`;
       
-      // Add shloka and explanation if present
       if (shloka && explanation) {
-        const shlokaDiv = document.createElement('div');
-        shlokaDiv.innerHTML = formatShlokaSection(shloka, explanation);
-        container.appendChild(shlokaDiv);
+        content += formatShlokaSection(shloka, explanation);
       }
       
-      chatHistory.appendChild(container);
-      chatHistory.scrollTop = chatHistory.scrollHeight; // Auto-scroll to latest message
+      messageDiv.innerHTML = `
+        <div class="message-avatar">🪷</div>
+        ${content}
+      `;
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-    
+
+    function addLoadingMessage() {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message krishna loading-msg';
+      messageDiv.innerHTML = `
+        <div class="message-avatar">🪷</div>
+        <div class="message-bubble" style="font-style: italic; opacity: 0.8;">Krishna is contemplating...</div>
+      `;
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      return messageDiv;
+    }
+
     function formatShlokaSection(shloka, explanation) {
       function parseShlokaBlock(shlokaText) {
         const chapterMatch = shlokaText.match(/Chapter:\s*([^\n]*)/);
@@ -878,32 +946,35 @@
       }
       
       const { chapterVerse, sanskrit, translit, translation } = parseShlokaBlock(shloka);
-      let html = `<div class="shloka-section">`;
+      let html = `<div class="shloka-section" style="margin-top: 0.5rem; margin-left: 48px;">`;
       if (chapterVerse) html += `<div class="shloka-label">${chapterVerse}</div>`;
       if (sanskrit) html += `<div class="shloka-sanskrit">${sanskrit}</div>`;
       if (translit) html += `<div class="shloka-transliteration">${translit}</div>`;
       if (translation) html += `<div class="shloka-translation">${translation}</div>`;
       html += `</div>`;
-      html += `<div class="context-section">${explanation.replace(/\n/g,'<br>')}</div>`;
+      html += `<div class="context-section" style="margin-left: 48px; margin-top: 0.5rem;">${explanation.replace(/\n/g,'<br>')}</div>`;
       return html;
     }
 
-    askBtn.addEventListener('click', async function() {
+    async function sendMessage() {
       const question = userQuestion.value.trim();
-      if (!question) {
-        gitaResponse.textContent = 'Please enter a question.';
-        gitaResponse.className = 'gita-response error';
-        gitaResponse.style.display = '';
-        return;
-      }
-      gitaResponse.textContent = 'Krishna is contemplating your question...';
-      gitaResponse.className = 'gita-response loading';
-      gitaResponse.style.display = '';
-      askBtn.style.display = 'none';
+      if (!question) return;
+
+      // Hide welcome message
+      const welcomeMsg = document.querySelector('.welcome-message');
+      if (welcomeMsg) welcomeMsg.style.display = 'none';
+
+      // Add user message
+      addUserMessage(question);
+      userQuestion.value = '';
       userQuestion.disabled = true;
+      askBtn.disabled = true;
+
+      // Add loading message
+      const loadingMsg = addLoadingMessage();
 
       messageCount++;
-      const includeShloka = (messageCount % 3 === 0); // Auto-shloka every 3 messages
+      const includeShloka = (messageCount % 3 === 0);
 
       try {
         const res = await fetch('/ask', {
@@ -917,34 +988,34 @@
         });
 
         const data = await res.json();
+        
+        // Remove loading message
+        loadingMsg.remove();
+
         if (res.ok && data.wisdom) {
-          // Add to conversation history
           conversationHistory.push([question, data.wisdom]);
-          
-          // Keep only last 3 exchanges
           if (conversationHistory.length > 3) {
             conversationHistory = conversationHistory.slice(-3);
           }
-          
-          // Append to chat history UI
-          appendToChatHistory(question, data.wisdom, data.shloka, data.explanation);
-          
-          // Reset form for next question
-          gitaResponse.style.display = 'none';
-          resetAskForm();
+          addKrishnaMessage(data.wisdom, data.shloka, data.explanation);
         } else {
-          gitaResponse.textContent = data.error || 'An error occurred.';
-          gitaResponse.className = 'gita-response error';
-          gitaResponse.style.display = '';
-          askBtn.style.display = '';
-          userQuestion.disabled = false;
+          addKrishnaMessage('I apologize, an error occurred. Please try again.', null, null);
         }
       } catch (err) {
-        gitaResponse.textContent = 'Could not connect to Krishna. Please try again later.';
-        gitaResponse.className = 'gita-response error';
-        gitaResponse.style.display = '';
-        askBtn.style.display = '';
-        userQuestion.disabled = false;
+        loadingMsg.remove();
+        addKrishnaMessage('Could not connect. Please check your connection and try again.', null, null);
+      }
+
+      userQuestion.disabled = false;
+      askBtn.disabled = false;
+      userQuestion.focus();
+    }
+
+    askBtn.addEventListener('click', sendMessage);
+    userQuestion.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
       }
     });
 
