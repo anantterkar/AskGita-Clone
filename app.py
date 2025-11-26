@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template, send_from_directory
-from gita_bot import chain_krishna, chain_shloka, chain_explanation
+from gita_bot import conv, shloka, explain, build_conversation_prompt
 from flask_cors import CORS
 import json
 import datetime
@@ -46,30 +46,41 @@ def update_verse_of_day():
 def ask_gita():
     data = request.get_json()
     question = data.get('question', '')
+    history = data.get('history', [])  # List of [user_msg, bot_msg] tuples
+    include_shloka = data.get('include_shloka', False)  # Optional flag to include shloka
+    
     if not question.strip():
         return jsonify({'error': 'No question provided.'}), 400
     
     try:
-        # Get Krishna's wisdom
-        wisdom = chain_krishna.invoke({"question": question})
+        # Build conversation prompt with history
+        conversation_prompt = build_conversation_prompt(history, question)
+        
+        # Get Krishna's wisdom using conversational chain
+        wisdom = conv.invoke({"conversation": conversation_prompt})
         wisdom_text = wisdom.content if hasattr(wisdom, "content") else str(wisdom)
 
-        # Get Shloka and translation
-        shloka = chain_shloka.invoke({"question": question})
-        shloka_text = shloka.content if hasattr(shloka, "content") else str(shloka)
+        response = {
+            'wisdom': wisdom_text.strip()
+        }
+        
+        # Optionally include shloka and explanation
+        if include_shloka:
+            # Get Shloka and translation
+            shloka_response = shloka.invoke({"question": question})
+            shloka_text = shloka_response.content if hasattr(shloka_response, "content") else str(shloka_response)
 
-        # Get Explanation
-        explanation = chain_explanation.invoke({
-            "question": question,
-            "shloka_and_translation": shloka_text
-        })
-        explanation_text = explanation.content if hasattr(explanation, "content") else str(explanation)
+            # Get Explanation
+            explanation_response = explain.invoke({
+                "question": question,
+                "shloka_and_translation": shloka_text
+            })
+            explanation_text = explanation_response.content if hasattr(explanation_response, "content") else str(explanation_response)
+            
+            response['shloka'] = shloka_text.strip()
+            response['explanation'] = explanation_text.strip()
 
-        return jsonify({
-            'wisdom': wisdom_text.strip(),
-            'shloka': shloka_text.strip(),
-            'explanation': explanation_text.strip()
-        })
+        return jsonify(response)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     

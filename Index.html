@@ -22,16 +22,6 @@
       --accent: #fbb117;
       --shadow: 0 4px 32px #e6b80022, 0 1.5px 8px 0 #8b3a1c11;
     }
-    [data-theme="dark"] {
-      --bg-light: #181818;
-      --bg-card: #232323cc;
-      --text-light: #f7e7c1;
-      --deep-brown: #f7e7c1;
-      --saffron: #ffd54f;
-      --saffron-dark: #ffb300;
-      --accent: #ffd54f;
-      --shadow: 0 4px 32px #ffd54f22, 0 1.5px 8px 0 #f7e7c111;
-    }
     html, body {
       height: 100%;
     }
@@ -54,32 +44,6 @@
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
-    }
-    .dark-toggle {
-      position: fixed;
-      top: 1.2em;
-      right: 1.5em;
-      z-index: 10;
-      background: var(--bg-card);
-      border: 1.5px solid var(--saffron);
-      border-radius: 50%;
-      width: 2.3em;
-      height: 2.3em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 2px 8px #0002;
-      transition: background 0.3s, border 0.3s;
-    }
-    .dark-toggle:focus {
-      outline: 2px solid var(--saffron-dark);
-    }
-    .dark-toggle svg {
-      width: 1.3em;
-      height: 1.3em;
-      fill: var(--saffron-dark);
-      transition: fill 0.3s;
     }
     .krishna-listening {
       position: absolute;
@@ -792,9 +756,6 @@
 </head>
 <body>
   <div class="om-fixed">ॐ</div>
-  <div class="dark-toggle" id="darkToggle" title="Toggle dark mode" tabindex="0" aria-label="Toggle dark mode">
-    <svg id="darkIcon" viewBox="0 0 24 24"><path d="M12 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1zm5.657 3.343a1 1 0 0 1 1.414 1.414l-.707.707a1 1 0 1 1-1.414-1.414l.707-.707zM21 11a1 1 0 1 1 0 2h-1a1 1 0 1 1 0-2h1zm-2.343 7.657a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 1 1 1.414-1.414l.707.707zM12 19a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1zm-7.657-2.343a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 1 1 1.414 1.414l-.707.707zM3 13a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2H3zm2.343-7.657a1 1 0 0 1 1.414-1.414l.707.707A1 1 0 1 1 6.05 6.05l-.707-.707z"/><circle cx="12" cy="12" r="5"/></svg>
-  </div>
   <!-- Mandala SVG background -->
   <svg class="mandala-bg" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="300" cy="300" r="290" stroke="#e6b800" stroke-width="2" fill="none"/>
@@ -857,54 +818,74 @@
         document.getElementById('userQuestion').focus();
       });
     });
-    // Dark mode toggle
-    const darkToggle = document.getElementById('darkToggle');
-    const html = document.documentElement;
-    function setTheme(theme) {
-      html.setAttribute('data-theme', theme);
-      localStorage.setItem('askgita-theme', theme);
-    }
-    darkToggle.addEventListener('click', function() {
-      setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-    });
-    darkToggle.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-      }
-    });
-    // Load theme from storage
-    (function() {
-      const theme = localStorage.getItem('askgita-theme');
-      if (theme) setTheme(theme);
-    })();
     // Ask Krishna button handler
     const askBtn = document.getElementById('askBtn');
     const userQuestion = document.getElementById('userQuestion');
     const gitaResponse = document.getElementById('gita-response');
     const chatHistory = document.getElementById('chat-history');
+    
+    // Track conversation history for context
+    let conversationHistory = []; // Array of [user_msg, bot_msg] tuples
+    let messageCount = 0; // Track number of messages for auto-shloka
 
     function resetAskForm() {
       userQuestion.value = '';
       userQuestion.disabled = false;
       askBtn.style.display = '';
       gitaResponse.style.display = 'none';
-      // askAgainBtn.style.display = 'none'; // Removed as per new logic
       userQuestion.focus();
     }
 
     // Function to append a new Q&A to the chat history
-    function appendToChatHistory(question, answer) {
+    function appendToChatHistory(question, wisdom, shloka, explanation) {
+      const container = document.createElement('div');
+      container.style.marginBottom = '1em';
+      
       const userQuestionDiv = document.createElement('div');
       userQuestionDiv.className = 'user-question';
       userQuestionDiv.textContent = `Your Question: "${question.replace(/</g,'&lt;').replace(/>/g,'&gt;')}"`;
 
       const krishnaWisdomDiv = document.createElement('div');
       krishnaWisdomDiv.className = 'krishna-wisdom';
-      krishnaWisdomDiv.innerHTML = `<b>✨ Krishna's Wisdom</b><br>${answer.replace(/\n/g,'<br>')}`;
+      krishnaWisdomDiv.innerHTML = `<b>✨ Krishna's Wisdom</b><br>${wisdom.replace(/\n/g,'<br>')}`;
 
-      //chatHistory.appendChild(userQuestionDiv);
-      chatHistory.appendChild(krishnaWisdomDiv);
+      container.appendChild(userQuestionDiv);
+      container.appendChild(krishnaWisdomDiv);
+      
+      // Add shloka and explanation if present
+      if (shloka && explanation) {
+        const shlokaDiv = document.createElement('div');
+        shlokaDiv.innerHTML = formatShlokaSection(shloka, explanation);
+        container.appendChild(shlokaDiv);
+      }
+      
+      chatHistory.appendChild(container);
       chatHistory.scrollTop = chatHistory.scrollHeight; // Auto-scroll to latest message
+    }
+    
+    function formatShlokaSection(shloka, explanation) {
+      function parseShlokaBlock(shlokaText) {
+        const chapterMatch = shlokaText.match(/Chapter:\s*([^\n]*)/);
+        const sanskritMatch = shlokaText.match(/Sanskrit:\s*([\s\S]*?)Transliteration:/);
+        const translitMatch = shlokaText.match(/Transliteration:\s*([\s\S]*?)Translation:/);
+        const translationMatch = shlokaText.match(/Translation:\s*([\s\S]*)/);
+        return {
+          chapterVerse: chapterMatch ? chapterMatch[1].trim() : '',
+          sanskrit: sanskritMatch ? sanskritMatch[1].trim() : '',
+          translit: translitMatch ? translitMatch[1].trim() : '',
+          translation: translationMatch ? translationMatch[1].trim() : ''
+        };
+      }
+      
+      const { chapterVerse, sanskrit, translit, translation } = parseShlokaBlock(shloka);
+      let html = `<div class="shloka-section">`;
+      if (chapterVerse) html += `<div class="shloka-label">${chapterVerse}</div>`;
+      if (sanskrit) html += `<div class="shloka-sanskrit">${sanskrit}</div>`;
+      if (translit) html += `<div class="shloka-transliteration">${translit}</div>`;
+      if (translation) html += `<div class="shloka-translation">${translation}</div>`;
+      html += `</div>`;
+      html += `<div class="context-section">${explanation.replace(/\n/g,'<br>')}</div>`;
+      return html;
     }
 
     askBtn.addEventListener('click', async function() {
@@ -920,33 +901,50 @@
       gitaResponse.style.display = '';
       askBtn.style.display = 'none';
       userQuestion.disabled = true;
-      // askAgainBtn.style.display = 'none'; // Removed as per new logic
+
+      messageCount++;
+      const includeShloka = (messageCount % 3 === 0); // Auto-shloka every 3 messages
 
       try {
         const res = await fetch('/ask', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ question })
-});
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            question,
+            history: conversationHistory,
+            include_shloka: includeShloka
+          })
+        });
 
         const data = await res.json();
-        if (res.ok && data.wisdom && data.shloka && data.explanation) {
-          const formattedAnswer = formatGitaAnswer(question, data.wisdom, data.shloka, data.explanation);
-          gitaResponse.style.display = 'none'; // Hide the main response area after answer
-          appendToChatHistory(question, formattedAnswer);
+        if (res.ok && data.wisdom) {
+          // Add to conversation history
+          conversationHistory.push([question, data.wisdom]);
+          
+          // Keep only last 3 exchanges
+          if (conversationHistory.length > 3) {
+            conversationHistory = conversationHistory.slice(-3);
+          }
+          
+          // Append to chat history UI
+          appendToChatHistory(question, data.wisdom, data.shloka, data.explanation);
+          
+          // Reset form for next question
+          gitaResponse.style.display = 'none';
+          resetAskForm();
         } else {
           gitaResponse.textContent = data.error || 'An error occurred.';
           gitaResponse.className = 'gita-response error';
           gitaResponse.style.display = '';
-          // askAgainBtn.style.display = ''; // Removed as per new logic
-          appendToChatHistory(question, `<div class="gita-response error">${data.error || 'An error occurred.'}</div>`);
+          askBtn.style.display = '';
+          userQuestion.disabled = false;
         }
       } catch (err) {
         gitaResponse.textContent = 'Could not connect to Krishna. Please try again later.';
         gitaResponse.className = 'gita-response error';
         gitaResponse.style.display = '';
-        // askAgainBtn.style.display = ''; // Removed as per new logic
-        appendToChatHistory(question, `<div class="gita-response error">Could not connect to Krishna. Please try again later.</div>`);
+        askBtn.style.display = '';
+        userQuestion.disabled = false;
       }
     });
 
