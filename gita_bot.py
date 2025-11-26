@@ -3,15 +3,10 @@ from langchain_core.prompts import ChatPromptTemplate
 import os
 import requests
 
-# Read the API key from environment variable (set it before running: $env:GROQ_API_KEY="your_key_here")
-# Alternative: read from a file if GROQ_API_KEY is not set
-if not os.environ.get("GROQ_API_KEY"):
-    api_key_path = r"C:\Users\adibr\Desktop\AskGita\.gitignore\api_ket.txt"
-    if os.path.exists(api_key_path):
-        with open(api_key_path, 'r', encoding='utf-8') as f:
-            os.environ["GROQ_API_KEY"] = f.read().strip()
-    else:
-        raise ValueError("GROQ_API_KEY environment variable not set and api_ket.txt file not found")
+# Read the API key from a private file
+api_key_path = r"C:\Users\adibr\Desktop\AskGita\.secrets\api_ket.txt"
+with open(api_key_path, 'r', encoding='utf-8') as f:
+    os.environ["GROQ_API_KEY"] = f.read().strip()
 
 llm = ChatGroq(model="llama-3.1-8b-instant", temperature=1)  # You can change the model if needed
 
